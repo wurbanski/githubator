@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Note runlevel 2345, 86 is the Start order and 85 is the Stop order
+#
+# chkconfig: 2345 86 85
+# description: Description of the Service
+#
+# Below is the source function library, leave it be
+. /etc/init.d/functions
+
+# result of whereis forever or whereis node
+export PATH=$PATH:/usr/local/bin  
+# result of whereis node_modules
+#export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+
+USER=nodejs
+SHELL=/bin/sh
+SCRIPT=/opt/ircbot/app.js
+PIDFILE=/var/run/githubator/githubator.pid
+SERVICE_NAME=githubator
+
+[ -d /var/run/$SERVICE_NAME ] || install -m 755 -o $USER -g $USER -d /var/run/$SERVICE_NAME
+
+start(){  
+        runuser $USER -s $SHELL -c "forever start -p `dirname $PIDFILE` --pidFile $PIDFILE $SCRIPT"
+}
+
+stop(){  
+        runuser $USER -s $SHELL -c "forever stop -p `dirname $PIDFILE` --pidFile $PIDFILE $SCRIPT"
+}
+
+restart(){  
+        runuser $USER -s $SHELL -c "forever restart -p `dirname $PIDFILE` --pidFile $PIDFILE $SCRIPT"
+}
+
+case "$1" in  
+        start)
+                echo "Start service $SERVICE_NAME"
+                start
+                ;;
+        stop)
+                echo "Stop service $SERVICE_NAME"
+                stop
+                ;;
+        restart)
+                echo "Restart service $SERVICE_NAME"
+                restart
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+                ;;
+esac  
