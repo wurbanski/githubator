@@ -1,19 +1,18 @@
 {
-    // General config
-	channels:   ["#channel1", "#channel2"],
-	server:     "irc.server",
-	botName:    "name",
-    userName:   "name",
-    realName:   "Real Name",
-    secret:     "github_webhook_secret",
-    // Features
-    joinMsg: {
-        enabled: false,
-        message: "welcome_msg for %channel%"
+    "port":       3000,
+	"channels":   ["#channel1", "#channel2"],
+	"server":     "irc.server",
+	"botName":    "name",
+    "userName":   "name",
+    "realName":   "Real Name",
+    "secret":     "github_webhook_secret",
+    "joinMsg": {
+        "enabled": false,
+        "message": "welcome_msg for %channel%"
     },
-    autorespond: {
-        enabled: true,
-        message: "response msg"
+    "autorespond": {
+        "enabled": true,
+        "message": "response msg"
     }
 }
 
