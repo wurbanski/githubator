@@ -1,0 +1,16 @@
+{
+  "name": "ircbot",
+  "version": "0.0.1",
+  "description": "IRC Bot dla SKOS PG, z obsługą informacji o commitach z githuba.",
+  "main": "bot.js",
+  "author": "wurbanski",
+  "license": "BSD",
+  "dependencies": {
+    "body-parser": "~1.12.3",
+    "crypto": "~0.0.3",
+    "express": "~4.12.3",
+    "irc": "~0.3.12"
+  },
+  "devDependencies": {},
+  "readme": "README.md"
+}
