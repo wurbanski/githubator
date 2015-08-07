@@ -54,8 +54,13 @@ app.listen(config.port);
 // IRC Bot features
 var parseMessage = function(message) {
     if (config.autorespond.enabled && message.args[1].indexOf(config.botName) == 0) {
-        bot.say(message.args[0], message.nick + ": " + config.autorespond.message);
+    	if (config.autorespond.random) {
+		var randInt = Math.floor(Math.random() * config.autorespond.messages.length);
+		bot.say(message.args[0], message.nick + ": " + config.autorespond.messages[randInt]);
+	} else {
+	        bot.say(message.args[0], message.nick + ": " + config.autorespond.message);
 	}
+    }
 };
 
 var sendWelcome = function(channel, nick, message) {
