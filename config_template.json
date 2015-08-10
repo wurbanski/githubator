@@ -12,12 +12,10 @@
     },
     "autorespond": {
         "enabled": true,
-	"random": true,
-        "message": "response msg",
-	"messages": [
-		"first random message",
-		"second random message"
-	]
+	    "messages": [
+            "first random message",
+            "second random message"
+        ]
     }
 }
 
