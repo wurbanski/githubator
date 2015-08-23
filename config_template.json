@@ -16,6 +16,12 @@
             "first random message",
             "second random message"
         ]
-    }
+    },
+	"bashMessages": {
+		"interval": 180,
+		"address": "http://bash.org.pl/random/",
+		"tag": "div.quote",
+		"introduceText": "nowy heheszek"
+	}
 }
 
