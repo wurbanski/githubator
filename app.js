@@ -78,20 +78,20 @@ if (config.joinMsg.enabled) {
 
 var minutes = config.bashMessages.interval, interval = minutes * 60 * 1000;
 if (minutes > 0) {
-	setInterval(function() {
-		var chanLength = config.channels.length
-		for (var i = 0; i < chanLength; i++) {
-			request(config.bashMessages.url, function(error, response, html){
-				if (!error) {
-					var $ = cheerio.load(html);
-					$(config.bashMessages.tag).each(function(i, e) {
-						bot.say(config.channels[i], config.bashMessages.introduceText + ":");
-						bot.say(config.channels[i], $(e).text().trim());
-					});
-				} else {
-					console.log("error while fetching data from ", config.channels.url);  
-				}
-			});
-		};
-	}, interval);
+    setInterval(function() {
+        var chanLength = config.channels.length
+        for (var i = 0; i < chanLength; i++) {
+            request(config.bashMessages.url, function(error, response, html){
+                if (!error) {
+                    var $ = cheerio.load(html);
+                    $(config.bashMessages.tag).each(function(i, e) {
+                        bot.say(config.channels[i], config.bashMessages.introduceText + ":");
+                        bot.say(config.channels[i], $(e).text().trim());
+                    });
+                } else {
+                    console.log("error while fetching data from ", config.channels.url);  
+                }
+            });
+        };
+    }, interval);
 }
