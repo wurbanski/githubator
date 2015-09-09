@@ -19,7 +19,7 @@
     },
     "bashMessages": {
         "interval": 180,
-        "address": "http://bash.org.pl/random/",
+        "url": "http://bash.org.pl/random/",
         "tag": "div.quote",
         "introduceText": "nowy heheszek"
     }
