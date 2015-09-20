@@ -77,25 +77,29 @@ if (config.joinMsg.enabled) {
 }
 
 var sendBashMessage = function() {
+    for (var i = 0; i < config.channels.length; i++) {
+        (function(index) {
+            request(config.bashMessages.url,function(error, response, html){
+                if (!error) {
+                    var $ = cheerio.load(html);
+                    $(config.bashMessages.tag).each(function(i, e) {
+                        bot.say(config.channels[index], config.bashMessages.introduceText + ":");
+                        bot.say(config.channels[index], $(e).text().trim());
+                    });
+                } else {
+                    console.log("error while fetching data from ", config.channels[index]);  
+                }
+            });
+        })(i);
+    };
+}
+
+var sendBashMessages = function() {
     var minutes = config.bashMessages.interval, interval = minutes * 60 * 1000;
     if (minutes > 0) {
         setInterval(function() {
-            for (var i = 0; i < config.channels.length; i++) {
-                (function(index) {
-                    request(config.bashMessages.url,function(error, response, html){
-                        if (!error) {
-                            var $ = cheerio.load(html);
-                            $(config.bashMessages.tag).each(function(i, e) {
-                                bot.say(config.channels[index], config.bashMessages.introduceText + ":");
-                                bot.say(config.channels[index], $(e).text().trim());
-                            });
-                        } else {
-                            console.log("error while fetching data from ", config.channels[index]);  
-                        }
-                    });
-                })(i);
-            };
+            sendBashMessage();
         }, interval);
     }
 }
-sendBashMessage();
+sendBashMessages();
