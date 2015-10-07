@@ -2,6 +2,8 @@ var irc = require("irc");
 var express = require('express');
 var bodyParser = require('body-parser');
 var crypto = require('crypto');
+var request = require('request');
+var cheerio = require('cheerio');
 var config = require('./config.json')
 var app = express();
 
@@ -74,3 +76,30 @@ if (config.joinMsg.enabled) {
     bot.addListener("join", sendWelcome);
 }
 
+var sendBashMessage = function() {
+    for (var i = 0; i < config.channels.length; i++) {
+        (function(index) {
+            request(config.bashMessages.url,function(error, response, html){
+                if (!error) {
+                    var $ = cheerio.load(html);
+                    $(config.bashMessages.tag).each(function(i, e) {
+                        bot.say(config.channels[index], config.bashMessages.introduceText + ":");
+                        bot.say(config.channels[index], $(e).text().trim());
+                    });
+                } else {
+                    console.log("error while fetching data from ", config.channels[index]);  
+                }
+            });
+        })(i);
+    };
+}
+
+var sendBashMessages = function() {
+    var minutes = config.bashMessages.interval, interval = minutes * 60 * 1000;
+    if (minutes > 0) {
+        setInterval(function() {
+            sendBashMessage();
+        }, interval);
+    }
+}
+sendBashMessages();

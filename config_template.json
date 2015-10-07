@@ -1,8 +1,8 @@
 {
     "port":       3000,
-	"channels":   ["#channel1", "#channel2"],
-	"server":     "irc.server",
-	"botName":    "name",
+    "channels":   ["#channel1", "#channel2"],
+    "server":     "irc.server",
+    "botName":    "name",
     "userName":   "name",
     "realName":   "Real Name",
     "secret":     "github_webhook_secret",
@@ -12,10 +12,16 @@
     },
     "autorespond": {
         "enabled": true,
-	    "messages": [
+        "messages": [
             "first random message",
             "second random message"
         ]
+    },
+    "bashMessages": {
+        "interval": 180,
+        "url": "http://bash.org.pl/random/",
+        "tag": "div.quote",
+        "introduceText": "nowy heheszek"
     }
 }
 
