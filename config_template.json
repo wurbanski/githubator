@@ -19,6 +19,7 @@
     },
     "bashMessages": {
         "interval": 180,
+		"minimalActivity": 60,
         "url": "http://bash.org.pl/random/",
         "tag": "div.quote",
         "introduceText": "nowy heheszek"

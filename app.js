@@ -6,7 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var config = require('./config.json')
 var app = express();
-
+var lastActivity = [];
 
 var bot = new irc.Client(config.server, config.botName, {userName: config.userName,
                                                          realName: config.realName,
@@ -55,7 +55,7 @@ app.listen(config.port);
 
 // IRC Bot features
 var parseMessage = function(message) {
-    if (config.autorespond.enabled && message.args[1].indexOf(config.botName) == 0) {
+    if (config.autorespond.enabled && message.args[1].indexOf(config.botName + ":") == 0) {
         var randInt = Math.floor(Math.random() * config.autorespond.messages.length);
         bot.say(message.args[0], message.nick + ": " + config.autorespond.messages[randInt]);
     }
@@ -67,8 +67,13 @@ var sendWelcome = function(channel, nick, message) {
     };
 };
 
+var saveActivity = function(channel) {
+    lastActivity[channel] = Date.now();
+}
+
 // IRC Event handlers
 bot.addListener("message", function(from, to, text, message) {
+    saveActivity(message.args[0]);
     parseMessage(message);
 });
 
@@ -78,19 +83,23 @@ if (config.joinMsg.enabled) {
 
 var sendBashMessage = function() {
     for (var i = 0; i < config.channels.length; i++) {
-        (function(index) {
-            request(config.bashMessages.url,function(error, response, html){
-                if (!error) {
-                    var $ = cheerio.load(html);
-                    $(config.bashMessages.tag).each(function(i, e) {
-                        bot.say(config.channels[index], config.bashMessages.introduceText + ":");
-                        bot.say(config.channels[index], $(e).text().trim());
-                    });
-                } else {
-                    console.log("error while fetching data from ", config.channels[index]);  
-                }
-            });
-        })(i);
+        var lastActivityInChannel = (config.channels[i] in lastActivity) ? lastActivity[config.channels[i]] : 0;
+        var lastActivityIntervalInMinutes = (Date.now() - lastActivityInChannel) / 60 / 1000;
+        if (lastActivityIntervalInMinutes < config.bashMessages.minimalActivity) {
+            (function(index) {
+                request(config.bashMessages.url,function(error, response, html){
+                    if (!error) {
+                        var $ = cheerio.load(html);
+                        $(config.bashMessages.tag).each(function(i, e) {
+                            bot.say(config.channels[index], config.bashMessages.introduceText + ":");
+                            bot.say(config.channels[index], $(e).text().trim());
+                        });
+                    } else {
+                        console.log("error while fetching data from ", config.channels[index]);  
+                    }
+                });
+            })(i);
+        }
     };
 }
 
