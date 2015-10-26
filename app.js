@@ -68,12 +68,12 @@ var sendWelcome = function(channel, nick, message) {
 };
 
 var saveActivity = function() {
-	lastActivity = Date.now();
+    lastActivity = Date.now();
 }
 
 // IRC Event handlers
 bot.addListener("message", function(from, to, text, message) {
-	saveActivity();
+    saveActivity();
     parseMessage(message);
 });
 
@@ -103,10 +103,10 @@ var sendBashMessages = function() {
     var minutes = config.bashMessages.interval, interval = minutes * 60 * 1000;
     if (minutes > 0) {
         setInterval(function() {
-			var lastActivityIntervalInMinutes = (Date.now() - lastActivity) / 60 / 1000
-			if (lastActivityIntervalInMinutes < config.bashMessages.minimalActivity) {
-				sendBashMessage();
-			}
+            var lastActivityIntervalInMinutes = (Date.now() - lastActivity) / 60 / 1000
+            if (lastActivityIntervalInMinutes < config.bashMessages.minimalActivity) {
+                sendBashMessage();
+            }
         }, interval);
     }
 }
