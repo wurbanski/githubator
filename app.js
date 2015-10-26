@@ -6,7 +6,7 @@ var request = require('request');
 var cheerio = require('cheerio');
 var config = require('./config.json')
 var app = express();
-
+var lastActivity = 0;
 
 var bot = new irc.Client(config.server, config.botName, {userName: config.userName,
                                                          realName: config.realName,
@@ -55,7 +55,7 @@ app.listen(config.port);
 
 // IRC Bot features
 var parseMessage = function(message) {
-    if (config.autorespond.enabled && message.args[1].indexOf(config.botName) == 0) {
+    if (config.autorespond.enabled && message.args[1].indexOf(config.botName + ":") == 0) {
         var randInt = Math.floor(Math.random() * config.autorespond.messages.length);
         bot.say(message.args[0], message.nick + ": " + config.autorespond.messages[randInt]);
     }
@@ -67,8 +67,13 @@ var sendWelcome = function(channel, nick, message) {
     };
 };
 
+var saveActivity = function() {
+	lastActivity = Date.now();
+}
+
 // IRC Event handlers
 bot.addListener("message", function(from, to, text, message) {
+	saveActivity();
     parseMessage(message);
 });
 
@@ -98,7 +103,10 @@ var sendBashMessages = function() {
     var minutes = config.bashMessages.interval, interval = minutes * 60 * 1000;
     if (minutes > 0) {
         setInterval(function() {
-            sendBashMessage();
+			var lastActivityIntervalInMinutes = (Date.now() - lastActivity) / 60 / 1000
+			if (lastActivityIntervalInMinutes < config.bashMessages.minimalActivity) {
+				sendBashMessage();
+			}
         }, interval);
     }
 }
