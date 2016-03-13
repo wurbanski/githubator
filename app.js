@@ -62,9 +62,11 @@ var parseMessage = function(message) {
 };
 
 var sendWelcome = function(channel, nick, message) {
-    if ( nick === config.botName ) {
-        bot.say(channel, config.joinMsg.message.replace("%channel%", channel))
-    };
+    if (nick === config.botName) {
+        bot.say(channel, config.joinMsg.helloMessage.replace("%channel%", channel));
+    } else {
+		bot.say(channel, config.joinMsg.welcomeMessage.replace("%nick%", nick));
+	}
 };
 
 var saveActivity = function(channel) {
