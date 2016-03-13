@@ -9,7 +9,7 @@
     "joinMsg": {
         "enabled": false,
         "helloMessage": "welcome_msg for %channel%",
-		"welcomeMessage": "hello %nick%"
+        "welcomeMessage": "hello %nick%"
     },
     "autorespond": {
         "enabled": true,
@@ -20,7 +20,7 @@
     },
     "bashMessages": {
         "interval": 180,
-		"minimalActivity": 60,
+        "minimalActivity": 60,
         "url": "http://bash.org.pl/random/",
         "tag": "div.quote",
         "introduceText": "nowy heheszek"
