@@ -65,8 +65,8 @@ var sendWelcome = function(channel, nick, message) {
     if (nick === config.botName) {
         bot.say(channel, config.joinMsg.helloMessage.replace("%channel%", channel));
     } else {
-		bot.say(channel, config.joinMsg.welcomeMessage.replace("%nick%", nick));
-	}
+        bot.say(channel, config.joinMsg.welcomeMessage.replace("%nick%", nick));
+    }
 };
 
 var saveActivity = function(channel) {
