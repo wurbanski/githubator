@@ -23,6 +23,9 @@
         "minimalActivity": 60,
         "url": "http://bash.org.pl/random/",
         "tag": "div.quote",
+        "minPoints": 2000,
+        "pointsTag": "span.points",
+        "retries": 5,
         "introduceText": "nowy heheszek"
     }
 }

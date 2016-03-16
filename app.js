@@ -83,24 +83,34 @@ if (config.joinMsg.enabled) {
     bot.addListener("join", sendWelcome);
 }
 
+var sendBashMessageTry = function(index, tryNo) {
+    request(config.bashMessages.url,function(error, response, html){
+        if (!error) {
+            if (tryNo > config.bashMessages.retries) {
+                return;
+            }
+            var $ = cheerio.load(html);
+            var points = $(config.bashMessages.pointsTag).text().trim();
+            if (parseInt(points) < parseInt(config.bashMessages.minPoints)) {
+                sendBashMessageTry(index, ++tryNo);
+                return;
+            }
+            $(config.bashMessages.tag).each(function(i, e) {
+                bot.say(config.channels[index], config.bashMessages.introduceText + ":");
+                bot.say(config.channels[index], $(e).text().trim());
+            });
+        } else {
+            console.log("error while fetching data from ", config.channels[index]);  
+        }
+    });
+}
+
 var sendBashMessage = function() {
     for (var i = 0; i < config.channels.length; i++) {
         var lastActivityInChannel = (config.channels[i] in lastActivity) ? lastActivity[config.channels[i]] : 0;
         var lastActivityIntervalInMinutes = (Date.now() - lastActivityInChannel) / 60 / 1000;
         if (lastActivityIntervalInMinutes < config.bashMessages.minimalActivity) {
-            (function(index) {
-                request(config.bashMessages.url,function(error, response, html){
-                    if (!error) {
-                        var $ = cheerio.load(html);
-                        $(config.bashMessages.tag).each(function(i, e) {
-                            bot.say(config.channels[index], config.bashMessages.introduceText + ":");
-                            bot.say(config.channels[index], $(e).text().trim());
-                        });
-                    } else {
-                        console.log("error while fetching data from ", config.channels[index]);  
-                    }
-                });
-            })(i);
+            sendBashMessageTry(i, 0);
         }
     };
 }
