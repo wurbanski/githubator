@@ -8,7 +8,8 @@
     "secret":     "github_webhook_secret",
     "joinMsg": {
         "enabled": false,
-        "message": "welcome_msg for %channel%"
+        "helloMessage": "welcome_msg for %channel%",
+        "welcomeMessage": "hello %nick%"
     },
     "autorespond": {
         "enabled": true,
@@ -19,9 +20,12 @@
     },
     "bashMessages": {
         "interval": 180,
-		"minimalActivity": 60,
+        "minimalActivity": 60,
         "url": "http://bash.org.pl/random/",
         "tag": "div.quote",
+        "minPoints": 2000,
+        "pointsTag": "span.points",
+        "retries": 5,
         "introduceText": "nowy heheszek"
     }
 }
